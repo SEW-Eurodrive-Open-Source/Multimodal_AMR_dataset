@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="efeu">
+  <!-- namespace prefix for robots topics -->
+  <xacro:arg name="ns_prefix" default="/sew_bot"/>
+  <!-- tf for links and joints, may end with '_' -->
+  <xacro:arg name="tf_prefix" default=""/>
+  <!-- robot position on startup (x y z) -->
+  <xacro:arg name="xyz" default="0 0 0"/>
+  <!-- robot orientation on startup (roll pitch yaw) -->
+  <xacro:arg name="rpy" default="0 0 0"/>
+
+  <xacro:property name="robot_ns_prefix" value="$(arg ns_prefix)" />
+  <xacro:property name="robot_link_prefix" value="$(arg tf_prefix)" />
+  <xacro:property name="robot_xyz" value="$(arg xyz)" />
+  <xacro:property name="robot_rpy" value="$(arg rpy)" />
+
+ <xacro:include filename="$(find urdf_viewer)/urdf/AMR/efeu_properties.xacro" />
+ <xacro:include filename="$(find urdf_viewer)/urdf/AMR/efeu_rad.xacro" />
+ <xacro:include filename="$(find urdf_viewer)/urdf/AMR/efeu_karosserie.xacro" />
+ <xacro:include filename="$(find urdf_viewer)/urdf/AMR/efeu_hubplatte.xacro" />
+ <xacro:include filename="$(find urdf_viewer)/urdf/AMR_sensors.xacro" />
+
+ <!-- Efeu_link und Joint, um Warnmeldung zu verhindern -->
+ <link name="${robot_link_prefix}base_link">
+   <origin xyz="0 0 0" rpy="0 0 0" />
+ </link>
+ <joint name="${robot_link_prefix}base_link_joint" type="fixed">
+   <parent link="${robot_link_prefix}base_link"/>
+   <child link="${robot_link_prefix}efeu"/>
+   <origin xyz="0 0 0" rpy="0 0 0" />
+ </joint>
+
+ <link name="${robot_link_prefix}efeu">
+   <origin xyz="0 0 0" rpy="0 0 0" />
+ </link> 
+ <joint name="${robot_link_prefix}efeu_joint" type="fixed">
+   <parent link="${robot_link_prefix}efeu"/>
+   <child link="${robot_link_prefix}link_fahrwerk1"/>
+   <origin xyz="0 0 0" rpy="0 0 0" />
+ </joint>
+
+<!-- Fuellung Wanne-Hubplatte -->
+<link name= "${robot_link_prefix}fuellung_wanne_hubplatte">
+  <visual>
+    <geometry>
+      <box size="0.6645 0.395 ${z_b_Karosserie_Hubplatte}" />
+    </geometry>
+    <material name="grey">
+      <color rgba="0.4 0.4 0.4 1.0"/>
+    </material>
+  </visual>
+</link>
+
+<joint name="${robot_link_prefix}fuellung_joint" type="fixed">
+  <parent link="${robot_link_prefix}link_karosserie" />
+  <child link="${robot_link_prefix}fuellung_wanne_hubplatte" />
+  <origin xyz="0 0 ${(d_Rad/2-z_h_klein_Fw1/2)+z_h_Fw1+z_b_Fw1_Karosserie+z_h_Karosserie+z_b_Karosserie_Hubplatte/2}" rpy="0 0 0" />
+</joint>
+
+<!-- helpers for trajectory planning -->
+<link name="${robot_link_prefix}col_01_link"/>
+<joint name="${robot_link_prefix}col_01_joint" type="fixed" >
+  <parent link="${robot_link_prefix}base_link"/>
+  <child link="${robot_link_prefix}col_01_link"/>
+  <origin xyz="-0.015 0 0"/>
+</joint>
+
+</robot>

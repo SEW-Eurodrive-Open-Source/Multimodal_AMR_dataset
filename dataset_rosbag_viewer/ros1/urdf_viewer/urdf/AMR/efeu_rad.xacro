@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">  
+<xacro:include filename="$(find urdf_viewer)/urdf/AMR/efeu_fahrwerk.xacro" />
+<!--__________________________________________Link Rad______________________________________________________________________-->  
+  <!--Rad: Macro des Links-->
+  <xacro:macro name="rad" params="name reflect origin_y offset_y">
+    <link name="${name}">
+      <visual>
+        <origin xyz="0 0 0" rpy="${reflect} 0 0"/> <!---->
+        <geometry>
+          <mesh filename="package://urdf_viewer/meshes/efeu_Rad.dae" meshscale="1 1 1"/> 
+        </geometry>
+      </visual>
+
+      <collision>
+        <origin xyz="0 ${origin_y}  0" rpy="${Math_pi/2} ${reflect} 0"/>  
+        <geometry>
+         <cylinder radius="${d_Rad/2}" length="${b_Rad}"/>  
+        </geometry>
+      </collision>
+
+      <inertial>
+        <mass value="${m_Rad}"/>
+        <origin xyz="0 ${offset_y} 0" rpy="${Math_pi/2} 0 0"/> 
+        <inertia ixx="${Ixx_Rad}" ixy="${Ixy_Rad}" ixz="${Ixz_Rad}" iyy="${Iyy_Rad}" iyz="${Iyz_Rad}" izz="${Izz_Rad}"/> 
+     </inertial> 
+    </link>
+ </xacro:macro>
+
+  <!--links fuer jedes Rad erstellen	-->
+  <xacro:rad name="${robot_link_prefix}rad_links_vorne" reflect="0" origin_y = "-0.0324" offset_y="${y_offset_Rad}"/>
+  <xacro:rad name="${robot_link_prefix}rad_rechts_vorne" reflect="${Math_pi}" origin_y = "0.0324" offset_y="${-y_offset_Rad}"/>
+  <xacro:rad name="${robot_link_prefix}rad_links_hinten" reflect="0" origin_y = "-0.0324" offset_y="${y_offset_Rad}"/>
+  <xacro:rad name="${robot_link_prefix}rad_rechts_hinten" reflect="${Math_pi}" origin_y = "0.0324" offset_y="${-y_offset_Rad}"/>
+
+<!--__________________________________________Joint Rad: Verbindung Fahrwerk-Raeder______________________________________________________________________--> 
+ <!--Rad: Macro der Gelenke-->
+ <xacro:macro name="joint_rad" params="name parent child origin_xyz">
+    <joint name="${name}" type="continuous">
+      <axis xyz="0 1 0" rpy="0 0 0" />
+      <parent link="${parent}"/>
+      <child link="${child}"/>
+      <origin xyz="${origin_xyz}" rpy="0 0 0" />
+      <dynamics damping="0.1" friction="0.01"/> <!--hier aendern weil anders aktuell nicht funktioniert-->
+      <limit effort="1000" velocity="1000"/>
+    </joint>
+  </xacro:macro>
+
+<!--Joints fuer jedes Rad erstellen-->
+  <xacro:joint_rad name="${robot_link_prefix}joint_rad_links_vorne" parent="${robot_link_prefix}link_fahrwerk1" child="${robot_link_prefix}rad_links_vorne" origin_xyz="0 ${y_b_Fw1} ${d_Rad/2}" />
+  <xacro:joint_rad  name="${robot_link_prefix}joint_rad_rechts_vorne" parent="${robot_link_prefix}link_fahrwerk1" child="${robot_link_prefix}rad_rechts_vorne"  origin_xyz="0 ${-y_b_Fw1} ${d_Rad/2}" />
+  <xacro:joint_rad name="${robot_link_prefix}joint_rad_links_hinten" parent="${robot_link_prefix}link_fahrwerk2" child="${robot_link_prefix}rad_links_hinten" origin_xyz=" ${-x_l_Fw2} ${y_b_Fw1} ${z_h_klein_Fw1/2}" />
+  <xacro:joint_rad name="${robot_link_prefix}joint_rad_rechts_hinten" parent="${robot_link_prefix}link_fahrwerk2" child="${robot_link_prefix}rad_rechts_hinten"  origin_xyz="${-x_l_Fw2} ${-y_b_Fw1} ${z_h_klein_Fw1/2}" />
+<!--___________________________________Transmission Rad_____________________________-->
+  <transmission name="tran1">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="${robot_link_prefix}joint_rad_links_vorne">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="${robot_link_prefix}motor_rad_links_vorne">
+      <mechanicalReduction>${uebersetzung_Rad}</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+ <transmission name="tran2">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="${robot_link_prefix}joint_rad_rechts_vorne">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="${robot_link_prefix}motor_rad_rechts_vorne">
+      <mechanicalReduction>${uebersetzung_Rad}</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+<transmission name="tran3">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="${robot_link_prefix}joint_rad_links_hinten">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="${robot_link_prefix}motor_rad_links_hinten">
+      <mechanicalReduction>${uebersetzung_Rad}</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+   <transmission name="tran4">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="${robot_link_prefix}joint_rad_rechts_hinten">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="${robot_link_prefix}motor_rad_rechts_hinten">
+      <mechanicalReduction>${uebersetzung_Rad}</mechanicalReduction>
+    </actuator>
+  </transmission>	
+ 
+</robot>

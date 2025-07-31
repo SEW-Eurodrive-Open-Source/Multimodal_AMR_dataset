@@ -1,0 +1,34 @@
+# best results with 7 x 5 checkerboard
+
+# intrinsics from UrbanLogistics_ML/data_prep/KITTI/dataToKITTI.py 
+
+image_width: 320
+image_height: 240
+
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [184.06065513369512, 0.0, 160.16030711699992, 
+	 0.0, 184.07423018567775, 120.2924664780963, 
+	 0.0, 0.0, 1.0]
+
+distortion_coefficients:
+  rows: 1
+  cols: 5
+  data: [-0.34004968473041836, 0.07787829624140852, -0.00027895403873718727, 0.00044137332989315403, 0.0]
+
+rectification_matrix:
+  rows: 3
+  cols: 3
+  data: [1., 0., 0.,
+         0., 1., 0.,
+         0., 0., 1.]
+
+
+# projection_matrix:
+# camera intrinsics | translation:
+#  rows: 3
+#  cols: 4
+#  data: [184.06065513369512, 0.0, 160.16030711699992, 0.0, 
+#	 0.0, 184.07423018567775, 120.2924664780963, 0.0,
+#	 0.0, 0.0, 1.0, 0.0]

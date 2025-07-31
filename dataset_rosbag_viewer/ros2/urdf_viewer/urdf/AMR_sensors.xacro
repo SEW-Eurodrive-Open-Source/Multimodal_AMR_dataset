@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Define properties-->
+  <xacro:property name="robot_link_prefix" value=""/>
+
+  <!-- Include external files-->
+  <xacro:include filename="$(find urdf_viewer)/urdf/sensors/sensor_bracket.xacro"/>
+  <xacro:include filename="$(find urdf_viewer)/urdf/sensors/sick_safetyscanner.xacro"/>
+
+  <!-- SICK scanners -->
+  <joint name="${robot_link_prefix}joint_scan_lb" type="fixed">
+    <axis xyz="0 -1 1" />
+    <origin xyz="-0.655 -0.205 0.3833" rpy="0 0 -2.386"/>
+    <parent link="${robot_link_prefix}base_link"/>
+    <child link="${robot_link_prefix}scan_lb_mount_link"/>
+  </joint>
+  <xacro:sick_safetyscanner name="${robot_link_prefix}scan_lb" ros_topic="${robot_ns_prefix}/scan_lb"/>
+
+  <joint name="${robot_link_prefix}joint_scan_rf" type="fixed">
+    <axis xyz="0 -1 0" />
+    <origin xyz="0.05 0.205 0.3833" rpy="0 0 0.755"/>
+    <parent link="${robot_link_prefix}base_link"/>
+    <child link="${robot_link_prefix}scan_rf_mount_link"/>
+  </joint>
+  <xacro:sick_safetyscanner name="${robot_link_prefix}scan_rf" ros_topic="${robot_ns_prefix}/scan_rf"/>
+
+  <!-- Sensor joints -->
+  
+ <link name="${robot_link_prefix}camera_correction_link">
+   <origin xyz="0 0 0" rpy="0 0 0" />
+ </link>
+ <joint name="${robot_link_prefix}camera_correction_joint" type="fixed">
+   <parent link="${robot_link_prefix}base_link"/>
+   <child link="${robot_link_prefix}camera_correction_link"/>
+   <origin xyz="0.198 -0.113 0.654" rpy="1.5708 0 1.5708" />
+ </joint>
+ 
+ <link name="${robot_link_prefix}tof_bin_link">
+   <origin xyz="0 0 0" rpy="0 0 0" />
+ </link> 
+  <joint name="${robot_link_prefix}tof_bin_joint" type="fixed">
+   <parent link="${robot_link_prefix}base_link"/>
+   <child link="${robot_link_prefix}tof_bin_link"/>
+   <origin xyz="0.198 -0.113 0.654" rpy="0 0 0" />
+ </joint>
+ 
+  <joint name="${robot_link_prefix}tof_label_joint" type="fixed">
+   <parent link="${robot_link_prefix}base_link"/>
+   <child link="${robot_link_prefix}tof_label_link"/>
+   <origin xyz="0.198 -0.113 0.654" rpy="-1.5708 0 1.5708" />
+ </joint>
+ 
+  <joint name="${robot_link_prefix}tof_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="${robot_link_prefix}camera_correction_link"/>
+    <child link="${robot_link_prefix}tof_link"/>
+  </joint>
+
+  <joint name="rgb" type="fixed">
+    <origin xyz="0.198 -0.01 0.595" rpy="0 0 0"/>
+    <parent link="${robot_link_prefix}base_link"/>
+    <child link="${robot_link_prefix}rgb_link"/>
+  </joint>
+
+  <joint name="thermal" type="fixed">
+    <origin xyz="0.207 0.074 0.597" rpy="0 0 0"/>
+    <parent link="${robot_link_prefix}base_link"/>
+    <child link="${robot_link_prefix}thermal_link"/>
+  </joint>
+
+  <joint name="radar" type="fixed">
+    <origin xyz="0.187 0.204 0.569" rpy="3.14159 0 0"/>
+    <parent link="${robot_link_prefix}base_link"/>
+    <child link="${robot_link_prefix}radar_link"/>
+  </joint>
+
+  <link name="map"/>
+  <joint name="radar_correction" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="${robot_link_prefix}radar_link"/>
+    <child link="map"/>
+  </joint>
+
+  <joint name="ussm0" type="fixed">
+    <origin xyz="0.198 -0.266 0.142" rpy="0 -0.436 0"/>
+    <parent link="${robot_link_prefix}base_link"/>
+    <child link="${robot_link_prefix}ussm0_link"/>
+  </joint>
+
+  <joint name="ussm2" type="fixed">
+    <origin xyz="0.198 -0.089 0.142" rpy="0 -0.436 0"/>
+    <parent link="${robot_link_prefix}base_link"/>
+    <child link="${robot_link_prefix}ussm2_link"/>
+  </joint>
+
+  <joint name="ussm1" type="fixed">
+    <origin xyz="0.198 0.089 0.142" rpy="0 -0.436 0"/>
+    <parent link="${robot_link_prefix}base_link"/>
+    <child link="${robot_link_prefix}ussm1_link"/>
+  </joint>
+
+  <joint name="ussm3" type="fixed">
+    <origin xyz="0.198 0.266 0.142" rpy="0 -0.436 0"/>
+    <parent link="${robot_link_prefix}base_link"/>
+    <child link="${robot_link_prefix}ussm3_link"/>
+  </joint>
+
+</robot>

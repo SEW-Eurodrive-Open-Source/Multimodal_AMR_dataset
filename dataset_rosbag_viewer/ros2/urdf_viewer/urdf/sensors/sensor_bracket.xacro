@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:property name="robot_link_prefix" value=""/>
+
+  <!-- Define sensor links with simple cuboid visuals -->
+  <xacro:macro name="simple_sensor_link" params="name color">
+    <link name="${robot_link_prefix}${name}">
+      <visual>
+        <geometry>
+          <box size="0.05 0.05 0.05"/>
+        </geometry>
+        <material name="${color}">
+          <color rgba="1 1 1 1"/>
+        </material>
+      </visual>
+    </link>
+  </xacro:macro>
+
+  <xacro:simple_sensor_link name="ussm0_link" color="Cyan"/>
+  <xacro:simple_sensor_link name="ussm1_link" color="Magenta"/>
+  <xacro:simple_sensor_link name="ussm2_link" color="Purple"/>
+  <xacro:simple_sensor_link name="ussm3_link" color="Lime"/>
+  
+  <link name="thermal_link">
+  <visual>
+    <origin xyz="-0.1 0 0" rpy="0 1.5708 0" />
+    <geometry>
+      <cylinder radius="0.05" length="0.2" />
+    </geometry>
+    <material name="green">
+      <color rgba="0 1.0 0 1.0" />
+    </material>
+  </visual>
+  </link>
+
+  <link name="rgb_link">
+  <visual>
+    <origin xyz="-0.05 0 0" rpy="0 0 0" />
+    <geometry>
+      <box size="0.1 0.04 0.04" />
+    </geometry>
+    <material name="white">
+      <color rgba="1.0 1.0 1.0 1.0" />
+    </material>
+  </visual>
+  </link>
+  
+  <link name="tof_link">
+  <visual>
+    <origin xyz="0 0 -0.03" rpy="0 0 0" />
+    <geometry>
+      <box size="0.12 0.18 0.06" />
+    </geometry>
+    <material name="grey">
+      <color rgba="0.5 0.5 0.5 1" />
+    </material>
+  </visual>
+  </link>
+  
+    <link name="tof_label_link">
+  <visual>
+    <origin xyz="0 0 -0.06" rpy="0 0 0" />
+    <geometry>
+      <cylinder radius="0.005" length="0.12" />
+    </geometry>
+    <material name="cyan">
+      <color rgba="0 0.8 1 1" />
+    </material>
+  </visual>
+  </link>
+  
+  
+    <link name="radar_link">
+  <visual>
+    <origin xyz="-0.03 0 0" rpy="0 0 0" />
+    <geometry>
+      <box size="0.06 0.12 0.18" />
+    </geometry>
+    <material name="dark grey">
+      <color rgba="0.2 0.2 0.2 1" />
+    </material>
+  </visual>
+  </link>
+    
+</robot>

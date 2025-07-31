@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+<!--_____________________________________________Fahrzeugeigenschaften/Properties____________________________________________________________________-->
+<!--Massen werden in kg angegeben und Laengen/Abstaende in Meter-->
+<!--Traegheiten werden in kg/m^2 angegeben-->
+<!-- Math Constants -->
+ <xacro:property name="Math_pi" value="3.1415926535" />
+
+<!-- ________________________Fahrwerk 1________________________-->
+ <xacro:property name="x_l_Fw1" value="0.28468" /><!-- Fahrwerk 1: Laenge von Koordinatenurprung 1.Gelenk -->
+ <xacro:property name="z_h_Fw1" value="0.202" /><!-- Hoehe Fahrwerk 1 -->
+ <xacro:property name="z_h_klein_Fw1" value="0.095" /><!-- Hoehe Fahrwerk 1 -->
+ <xacro:property name="y_b_Fw1" value="0.2685" /><!-- Breite Fahrwerk 1 -->
+ <xacro:property name="m_Fw1" value="50" /> <!-- Masse (Fahrwerk 1 plus 2 Raeder: gewogen)-->
+  <!--Traegheitsmomente
+ <xacro:property name="Ixx_Fw1" value="${0.77}" />
+ <xacro:property name="Ixy_Fw1" value="${-0.003341047*0}" />
+ <xacro:property name="Ixz_Fw1" value="${-0.0226*0}" /> 
+ <xacro:property name="Iyy_Fw1" value="${0.749}" /> 
+ <xacro:property name="Iyz_Fw1" value="${0.001591025*0}" /> 
+ <xacro:property name="Izz_Fw1" value="${1.31}" /> -->
+  <xacro:property name="Ixx_Fw1" value="${0.77}" />
+ <xacro:property name="Ixy_Fw1" value="${-0.000}" />
+ <xacro:property name="Ixz_Fw1" value="${-0.00}" /> 
+ <xacro:property name="Iyy_Fw1" value="${0.749}" /> 
+ <xacro:property name="Iyz_Fw1" value="${0.000}" /> 
+ <xacro:property name="Izz_Fw1" value="${1.31}" /> 
+ <!--Offset Massenschwerpunkt (Koordinatensystem)-->
+ <xacro:property name="x_offset_Fw1" value="${0.06516}" />
+ <xacro:property name="y_offset_Fw1" value="${0.00765*0}" />
+ <xacro:property name="z_offset_Fw1" value="${0.0609}" />
+<!--  ________________________Fahrwerk 2 ________________________-->
+ <xacro:property name="x_l_Fw2" value="0.114" /><!-- Fahrwerk 2: Laenge von Koordinatenurprung bis mittelpunkt Achse -->
+ <xacro:property name="y_b_Fw2" value="0.2685" /><!-- Breite Fahrwerk 2 -->
+ <xacro:property name="m_Fw2" value="16.5" /> <!-- Masse (Fahrwerk 2)-->
+  <!--Traegheitsmomente
+ <xacro:property name="Ixx_Fw2" value="${0.338921}" />
+ <xacro:property name="Ixy_Fw2" value="${-0.000014794*0}" />
+ <xacro:property name="Ixz_Fw2" value="${-0.002029*0}" /> 
+ <xacro:property name="Iyy_Fw2" value="${0.069184}" /> 
+ <xacro:property name="Iyz_Fw2" value="${-0.000002*0}" /> 
+ <xacro:property name="Izz_Fw2" value="${0.376139}" /> -->
+  <xacro:property name="Ixx_Fw2" value="${0.338921}" />
+ <xacro:property name="Ixy_Fw2" value="${-0.00000}" />
+ <xacro:property name="Ixz_Fw2" value="${-0.000}" /> 
+ <xacro:property name="Iyy_Fw2" value="${0.069184}" /> 
+ <xacro:property name="Iyz_Fw2" value="${-0.000}" /> 
+ <xacro:property name="Izz_Fw2" value="${0.376139}" /> 
+  <!--Offset Massenschwerpunkt (Koordinatensystem)-->
+ <xacro:property name="x_offset_Fw2" value="${-0.1107}" />
+ <xacro:property name="z_offset_Fw2" value="${0.05545}" />
+ 
+<!--________________________Karosserie: Wanne plus Verkleidung ________________________ -->
+ <xacro:property name="z_h_Karosserie" value="0.106" /><!--Hoehe/Dicke der Wanne-->
+ <!--Traegheitsmomente
+ <xacro:property name="Ixx_Karosserie" value="${1.61}" />
+ <xacro:property name="Ixy_Karosserie" value="${-0.189*0}" />
+ <xacro:property name="Ixz_Karosserie" value="${0.049*0}" /> 
+ <xacro:property name="Iyy_Karosserie" value="${3.33}" /> 
+ <xacro:property name="Iyz_Karosserie" value="${0.005*0}" /> 
+ <xacro:property name="Izz_Karosserie" value="${4.69}" />--> 
+  <xacro:property name="Ixx_Karosserie" value="${1.61}" />
+ <xacro:property name="Ixy_Karosserie" value="${-0.0}" />
+ <xacro:property name="Ixz_Karosserie" value="${0.0*0}" /> 
+ <xacro:property name="Iyy_Karosserie" value="${3.33}" /> 
+ <xacro:property name="Iyz_Karosserie" value="${0.00}" /> 
+ <xacro:property name="Izz_Karosserie" value="${4.69}" />
+ <!--Offset Massenschwerpunkt (Koordinatensystem)-->
+ <xacro:property name="x_offset_Karosserie" value="${-0.036}" />
+ <xacro:property name="y_offset_Karosserie" value="${-0.0016*0}" />
+ <xacro:property name="z_offset_Karosserie" value="${-0.0562}" />
+ 
+<!--  ________________________Hubplatte ________________________ -->
+ <xacro:property name="z_h_Hubplatte" value="0.02" /><!--Hoehe/Dicke der Hubplatte-->
+ <xacro:property name="m_Hubplatte" value="14.104" /><!--Masse der Hubplatte (Entnommen aus CAD)-->
+ <!--Traegheitsmomente
+ <xacro:property name="Ixx_Hubplatte" value="${0.437}" />
+ <xacro:property name="Ixy_Hubplatte" value="${0.008139*0}" />
+ <xacro:property name="Ixz_Hubplatte" value="${-0.0001783*0}" /> 
+ <xacro:property name="Iyy_Hubplatte" value="${0.959}" /> 
+ <xacro:property name="Iyz_Hubplatte" value="${0.000042116*0}" /> 
+ <xacro:property name="Izz_Hubplatte" value="${0.1395}" /> -->
+  <xacro:property name="Ixx_Hubplatte" value="${0.437}" />
+ <xacro:property name="Ixy_Hubplatte" value="${0.000}" />
+ <xacro:property name="Ixz_Hubplatte" value="${-0.00}" /> 
+ <xacro:property name="Iyy_Hubplatte" value="${0.959}" /> 
+ <xacro:property name="Iyz_Hubplatte" value="${0.000}" /> 
+ <xacro:property name="Izz_Hubplatte" value="${0.1395}" />
+ <!--Offset Massenschwerpunkt (Koordinatensystem)-->
+ <xacro:property name="x_offset_Hubplatte" value="${0.0071}" />
+ <xacro:property name="y_offset_Hubplatte" value="${-0.00224*0}" />
+ <xacro:property name="z_offset_Hubplatte" value="${0.01028}" />
+<!--  ________________________Raeder ________________________ -->
+ <xacro:property name="d_Rad" value="0.309" /><!--Durchmesser Rad-->
+ <xacro:property name="b_Rad" value="0.11063" /><!--Breite Rad-->
+ <xacro:property name="m_Rad" value="4.863" /><!--CAD+ Reifen gewogen-->
+ <xacro:property name="mu_Rad" value="0.8" /><!--Reibung Autoreifen auf Asphalt-->
+ <xacro:property name="schlupf_Rad" value="0"/><!--Schlupf des Rades-->
+ <xacro:property name="uebersetzung_Rad" value="1"/><!--Uebersetzung des Getriebes zwischen Motor und Rad-->
+ <xacro:property name="kp_Rad" value="10000000" /><!--Kontaktsteifigkeit entlang der Kontaktflaeche-->
+ <xacro:property name="kd_Rad" value="0" /><!--Daempfung entlang der Kontaktflaeche-->
+ <!--Traegheitsmomente-->
+ <xacro:property name="Ixx_Rad" value="${0.31059}" />
+ <xacro:property name="Ixy_Rad" value="${-0.000017}" />
+ <xacro:property name="Ixz_Rad" value="${0}" /> 
+ <xacro:property name="Iyy_Rad" value="${0.5287}" /> <!--Iyy= Irad(0.0514)+Imotor*i^2  +Igetriebe*i^2 -->
+ <xacro:property name="Iyz_Rad" value="${0}" /> 
+ <xacro:property name="Izz_Rad" value="${0.031023}" />
+ <!--Offset Massenschwerpunkt (Koordinatensystem)-->
+ <xacro:property name="y_offset_Rad" value="${-0.023}" />
+
+<!--  ________________________Gelenke ________________________ -->
+<!--Gelenk Fahrwerk-Raeder-->
+<xacro:property name="daempfung_Rad_joint" value="0.1" />
+<xacro:property name="friction_Rad_joint" value="0.01" />
+<!--Gelenk Fahrwerk-Pendeln (Rotation um x-Achse)-->
+<xacro:property name="daempfung_pendel_joint" value="0" />
+<xacro:property name="friction_pendel_joint" value="0.15" />
+<!--Gelenk Fahrwerk-Knicken (Rotation um y-Achse)-->
+<xacro:property name="daempfung_knick_joint" value="0.0" />
+<xacro:property name="friction_knick_joint" value="0.15" />
+
+
+<!-- ________________________Sonstige Variablen ________________________-->
+ <xacro:property name="m_efeu" value="120" /><!--Masse des gesamten efeu Fahrzeugs (erste Schaetzung)-->
+ <xacro:property name="z_b_Fw1_Karosserie" value="0.003" /><!--Abstand zwischen Fahrwerk1 und Wanne-->
+ <xacro:property name="z_b_Karosserie_Hubplatte" value="0.05351" /><!--Abstand zwischen Wanne und Hubplatte, wenn keine Hubantriebe vorhanden sind-->
+
+ <xacro:property name="z_Fw1_Pendelachse" value="0.002" /><!--Abstand zwischen unterseite Fahrwerk1 und unterseite Pendelachse-->
+ <xacro:property name="z_Pendelachse" value="0.094" /><!--Hoehe Pendelachse-->
+ <xacro:property name="x_Pendelachse" value="0.080" /><!--Laenge Pendelachse geht bis Mittelpunkt vom Gelenk-->
+ <!--<xacro:property name="z_b_Karosserie_Hubplatte" value="0.05351" />
+ <xacro:property name="z_b_Karosserie_Hubplatte" value="0.05351" />-->
+
+
+
+</robot>

@@ -1,0 +1,33 @@
+<?xml version="1.0"?> 
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="efeu">
+  <!-- Link Karosserie -->
+  <link name="${robot_link_prefix}link_karosserie">
+    <!-- pose and inertial -->
+    <inertial>
+       <mass value="${m_efeu-m_Fw1-m_Fw2-m_Hubplatte}"/><!--Muss angepasst werden, wenn sensorik oder hubantriebe dazukommen-->
+       <origin xyz="${x_offset_Karosserie} ${y_offset_Karosserie} ${(d_Rad/2 - z_h_klein_Fw1/2)+z_h_Fw1+z_b_Fw1_Karosserie+z_h_Karosserie + z_offset_Karosserie}" rpy="0 0 0"/> <!--hier aendern-->
+       <inertia ixx="${Ixx_Karosserie}" ixy="${Ixy_Karosserie}" ixz="${Ixz_Karosserie}" iyy="${Iyy_Karosserie}" iyz="${Iyz_Karosserie}" izz="${Izz_Karosserie}"/> 
+    </inertial>	
+  <!--Collision-->
+    <collision name="collision_karosserie">
+    <origin xyz="-0 0 ${(d_Rad/2 - z_h_klein_Fw1/2)+z_h_Fw1+z_b_Fw1_Karosserie+z_h_Karosserie}" rpy="0 0 ${Math_pi}"/>
+      <geometry>
+       <mesh filename="package://urdf_viewer/meshes/efeu_wanne_collision.dae" meshscale="1 1 1"/> 
+      </geometry>
+    </collision>
+  <!--Visual-->
+    <visual>
+      <origin xyz="-0 0 ${(d_Rad/2 - z_h_klein_Fw1/2)+z_h_Fw1+z_b_Fw1_Karosserie+z_h_Karosserie}" rpy="0 0 ${Math_pi}"/>
+      <geometry>
+       <mesh filename="package://urdf_viewer/meshes/efeu_wanne_verkleidung.dae" meshscale="1 1 1" />
+      </geometry>
+     </visual>
+     </link>
+
+  <!-- Verbindung zwischen Fahrwerk 1 und Karosserie -->
+  <joint name="${robot_link_prefix}fahrwerk_karosserie_joint" type="fixed">
+    <parent link="${robot_link_prefix}link_fahrwerk1" />
+    <child link="${robot_link_prefix}link_karosserie" />
+    <origin xyz="${-0.2876} 0 0" rpy="0 0 0" />
+  </joint>
+</robot>

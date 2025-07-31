@@ -1,0 +1,9 @@
+#From left to right sensor number and offset for each sensor. Measured distrance - ground truth distance = offset
+
+0    252    mm
+
+2    263    mm
+
+1    256    mm
+
+3    257    mm

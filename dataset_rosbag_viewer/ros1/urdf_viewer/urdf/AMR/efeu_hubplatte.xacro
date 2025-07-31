@@ -1,0 +1,33 @@
+<?xml version="1.0"?> 
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="efeu">
+  <!-- Link Hubplatte -->
+  <link name="${robot_link_prefix}link_hubplatte">
+    <!-- pose and inertial -->
+       <inertial>
+      <mass value="${m_Hubplatte}"/>
+     <origin xyz="${x_offset_Hubplatte} ${y_offset_Hubplatte} ${(d_Rad/2-z_h_klein_Fw1/2)+z_h_Fw1+z_b_Fw1_Karosserie+z_h_Karosserie+z_b_Karosserie_Hubplatte + z_offset_Hubplatte}" rpy="0 0 ${Math_pi/2}"/>
+     <inertia ixx="${Ixx_Hubplatte}" ixy="${Ixy_Hubplatte}" ixz="${Ixz_Hubplatte}" iyy="${Iyy_Hubplatte}" iyz="${Iyz_Hubplatte}" izz="${Izz_Hubplatte}"/> 
+    </inertial>	
+  <!--Collision-->
+    <collision name="collision_hubplatte">
+    <origin xyz="-0 0 ${(d_Rad/2-z_h_klein_Fw1/2)+z_h_Fw1+z_b_Fw1_Karosserie+z_h_Karosserie+z_b_Karosserie_Hubplatte}" rpy="0 0 0"/>
+      <geometry>
+       <mesh filename="package://urdf_viewer/meshes/efeu_hubplatte.dae" meshscale="1 1 1"/> 
+      </geometry>
+    </collision>
+  <!--Visual-->
+    <visual>
+      <origin xyz="-0 0 ${(d_Rad/2-z_h_klein_Fw1/2)+z_h_Fw1+z_b_Fw1_Karosserie+z_h_Karosserie+z_b_Karosserie_Hubplatte}" rpy="0 0 0"/><!--0.311+0.05351-->
+      <geometry>
+       <mesh filename="package://urdf_viewer/meshes/efeu_hubplatte.dae" meshscale="1 1 1" />
+      </geometry>
+     </visual>
+  </link>
+  <!-- Verbindung zwischen Karosserie und Hubplatte (fuers erste fix, solange keine Hubantriebe im Modell sind) -->
+  <joint name="${robot_link_prefix}karosserie_hubplatte_joint" type="fixed">
+    <parent link="${robot_link_prefix}link_karosserie" />
+    <child link="${robot_link_prefix}link_hubplatte" />
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+  
+</robot>
