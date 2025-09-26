@@ -302,10 +302,10 @@ Since missing a curb does not pose a safety risk, they are not considered for ou
 | Parameter               | Value                                                                                                                              |
 | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | Download link           | [https://share.sew-eurodrive.de/sew-dataset/SEW_Dataset_2025.zip](https://share.sew-eurodrive.de/sew-dataset/SEW_Dataset_2025.zip) |
-| Download size           | 44 GB                                                                                                                              |
+| Download size           | 50 GB                                                                                                                              |
 | Contact                 | SEW-Dataset@sew-eurodrive.de                                                                                                       |
 
-The unzipped dataset has 88 GB.
+The unzipped dataset has 100 GB.
 
 If you need further information or data, have questions, suggestions, or improvements, please contact us at
 SEW-Dataset@sew-eurodrive.de. We have ~45.000 more synchronized unlabelled data points of each modality, the undistorted images as well as the original rosbags.
@@ -330,4 +330,5 @@ Please cite:
 # License
 
 The contents of this documentation is licensed under the [CC-BY-4.0 license](./LICENSE.CC-BY-4.0).  
-The code in [demo_scripts/\*](./demo_scripts/) is licensed under the [MIT license](./LICENSE.MIT).
+The code in [demo_scripts/\*](./demo_scripts/) is licensed under the [MIT license](./LICENSE.MIT).  
+The dataset itself is licensed under the CC-BY-SA 4.0 license.
