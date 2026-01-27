@@ -299,13 +299,24 @@ Since missing a curb does not pose a safety risk, they are not considered for ou
 
 # Download
 
+
+The dataset can be downloaded with the link below:
 | Parameter               | Value                                                                                                                              |
 | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | Download link           | [https://share.sew-eurodrive.de/sew-dataset/SEW_Dataset_2025.zip](https://share.sew-eurodrive.de/sew-dataset/SEW_Dataset_2025.zip) |
 | Download size           | 50 GB                                                                                                                              |
+| Unzipped size           | 100 GB                                                                                                                             |
+| Data                    | Train set, Test set, 5 ROS1 bags, 5 ROS2 bags                                                                                      |
 | Contact                 | SEW-Dataset@sew-eurodrive.de                                                                                                       |
 
-The unzipped dataset has 100 GB.
+If you only need the test set as a faster downloading option, use the link below:
+| Parameter               | Value                                                                                                                              |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Download link           | [https://share.sew-eurodrive.de/sew-dataset/SEW_Test_set_2025.zip](https://share.sew-eurodrive.de/sew-dataset/SEW_Test_set_2025.zip)|
+| Download size           | 10 GB                                                                                                                              |
+| Unzipped size           | 21 GB                                                                                                                              |
+| Data                    | Test set, 1 ROS1 bag, 1 ROS2 bag                                                                                                   |
+| Contact                 | SEW-Dataset@sew-eurodrive.de                                                                                                       |
 
 If you need further information or data, have questions, suggestions, or improvements, please contact us at
 SEW-Dataset@sew-eurodrive.de. We have ~45.000 more synchronized unlabelled data points of each modality, the undistorted images as well as the original rosbags.
