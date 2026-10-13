@@ -1,0 +1,36 @@
+# =====================================================================
+# KITTI object dataset - example viewer configuration
+# =====================================================================
+# Example showing how to point the viewer at a standard KITTI download.
+# The SEW dataset follows the KITTI layout, so the same viewer works on
+# both - only the paths and a couple of format flags differ.
+# Adjust `base_dir` to your KITTI root and run:
+#     python SEW_Dataset_Viewer.py --config config_kitti.yaml
+
+base_dir: /your/path/to/Kitti_Dataset/
+
+label_folder:          data_object_label_2/training/label_2
+calib_folder:          data_object_calib/training/calib
+image_rgb_folder:      data_object_image_2/training/image_2   # left color camera
+image_thermal_folder:  data_object_image_3  # right color camera (shown in the thermal pane) 
+bin_folder:            data_object_velodyne/training/velodyne
+pcd_folder:            ""     # KITTI has no .pcd
+yolo_thermal_folder:   ""     # KITTI has no 2D YOLO labels
+yolo_rgb_folder:       ""
+output_folder:         output_kitti  # relative to this config file; where 's' / --export write images
+
+# --- format options -----------------------------------------------------
+image_ext: .png
+
+# --- default visible layers (toggle live with the keys shown) -----------
+show_tof_pcl: true         # 1  point cloud (depth on rgb | intensity on right cam)
+show_3d_label: true        # 2  3D boxes (KITTI)
+show_thermal_label: false  # 3  right-cam 2D YOLO boxes (KITTI: none)
+show_rgb_label: false      # 4  rgb 2D YOLO boxes (KITTI: none)
+show_rgb_kitti_2d: false   # 5  rgb 2D KITTI box (bbox cols of the label file)
+show_predictions: false    # p  prediction overlays (dashed; needs a pred_* folder)
+show_colorbars: false      # c  colour bars (left = range in m | right = amplitude 0-2900)
+
+# --- display ------------------------------------------------------------
+display_max_width: 2000
+display_max_height: 1000

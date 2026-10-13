@@ -1,0 +1,49 @@
+# =====================================================================
+# SEW Multimodal AMR Dataset - viewer configuration
+# =====================================================================
+# All folder paths may be absolute, or relative to `base_dir`.
+# Point `base_dir` at your local copy of the dataset and you are ready.
+
+base_dir: /your/path/to/SEW_Dataset_2026/
+
+# Dataset split. The {split} token in the folder paths below is replaced with this
+# value, so switching to the test/validation frames is a one-word change here (or
+# pass --split test on the command line, which overrides this).
+split: train                     # e.g. train / test / val (match the dataset's dir names)
+
+# --- data folders (relative to base_dir) --------------------------------
+# The {split} paths are quoted because a bare leading '{' is YAML flow-mapping syntax.
+label_folder:          "{split}/01_kitti"                # KITTI-format 3D labels (.txt)
+calib_folder:          "{split}/03_calib"                # KITTI-format calibration (.txt)
+image_rgb_folder:      "{split}/50_rgb/calibrated"       # RGB images     (left pane,  KITTI: image_2)
+image_thermal_folder:  "{split}/60_thermal/calibrated"   # thermal images (right pane, KITTI: image_3)
+bin_folder:            "{split}/70_tof/pointcloud/bin"    # ToF point cloud .bin (x,y,z,intensity) - default
+pcd_folder:            "{split}/70_tof/pointcloud/pcd"    # ToF point cloud .pcd (same data; set use_pcd: true to use)
+yolo_thermal_folder:   "{split}/02_yolo_thermal_distance" # 2D YOLO labels, thermal (optional)
+yolo_rgb_folder:       "{split}/02_yolo_rgb_distance"     # 2D YOLO labels, rgb (optional)
+timestamps_folder:     "{split}/04_timestamps"           # per-frame sensor timestamps (sync-spread bar)
+output_folder:         output_sew                       # relative to this config file; where 's' / --export write images
+
+# --- predictions (optional): dashed boxes, toggled live with 'p' ---------
+# Fill in a folder to overlay model predictions in the matching pane. Leave empty
+# to disable. YOLO files are `cls xc yc w h [conf]`; KITTI files are label-format.
+pred_yolo_rgb_folder:      ""    # 2D YOLO predictions, rgb pane
+pred_yolo_thermal_folder:  ""    # 2D YOLO predictions, thermal pane
+pred_kitti_folder:         ""    # 3D KITTI predictions, both panes
+
+# --- format options -----------------------------------------------------
+image_ext: .jpg                 # image file extension (SEW: .jpg, KITTI: .png)
+use_pcd: false                  # read the .pcd instead of the .bin for the ToF point cloud
+
+# --- default visible layers (toggle live with the keys shown) -----------
+show_tof_pcl:      true    # 1  ToF point cloud (depth on rgb | intensity on thermal)
+show_3d_label:     true    # 2  3D boxes (KITTI)
+show_thermal_label: false  # 3  thermal 2D YOLO boxes
+show_rgb_label:    false   # 4  rgb 2D YOLO boxes
+show_rgb_kitti_2d: false   # 5  rgb 2D KITTI box (bbox cols of the label file)
+show_predictions:  false   # p  prediction overlays (dashed; needs a pred_* folder above)
+show_colorbars:    false   # c  colour bars (left = range in m | right = amplitude 0-2900)
+
+# --- display ------------------------------------------------------------
+display_max_width: 1800    # window image is scaled to fit within this box
+display_max_height: 1000
