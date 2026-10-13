@@ -1,0 +1,47 @@
+# =============================================================================
+# SEW Multimodal AMR Safety Challenge — Submission Form
+# =============================================================================
+# Further information: https://github.com/SEW-Eurodrive-Open-Source/Multimodal_AMR_dataset
+#
+# Fill in the value after each colon. Email this form together with your
+# <modality>.zip of per-frame predictions to  SEW-Dataset@sew-eurodrive.de
+#
+# The zip name is the modality: rgb.zip, radar.zip, ...  More than one modality
+# (e.g. rgb_radar.zip) means an early / dense fusion method. Submitting several
+# methods in one email is fine — just attach one <modality>.zip + one filled
+# copy of this form per method (e.g. rgb.zip + rgb.txt and thermal.zip + thermal.txt).
+# =============================================================================
+
+# Name of your method, e.g. FusionNet-L
+method:
+
+# Organisation / lab / your name, e.g. Awesome Research
+organisation:
+
+# Sensors your method actually consumes. Space- or comma-separated, any subset
+# of the six modalities: rgb  thermal  tof  radar  ultrasonic  laser
+modalities:
+
+# Coordinate frame — which sensor's coordinate system your predictions are in.
+# One of: rgb  thermal  tof  radar  ultrasonic  laser
+#   Single modality : optional (defaults to that sensor's own frame).
+#   Fusion (>= 2)   : REQUIRED — name the one sensor frame all predictions share.
+coordinate_frame:
+
+# Label format:
+#   KITTI     3D boxes in the sensor frame
+#   YOLO      2D bird's-eye-view boxes  (needs the BEV scale below)
+#   YOLO_dist 2D YOLO boxes + Cartesian distance in metres
+label:
+
+# Reference for your method: a public code repository and/or a paper.
+code_url:
+paper_url:
+
+# BEV scale — ONLY required if label is YOLO. Give the ranges in metres so we
+# can recover metric coordinates as
+#     X = x_center * Xrange - Xrange / 2
+#     Z = z_center * Zrange
+# Example:  Xrange: 15.84   Zrange: 9.24
+Xrange:
+Zrange:
