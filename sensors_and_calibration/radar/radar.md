@@ -124,4 +124,3 @@ The following demo scripts are provided to help you get started with radar data 
 
 - [**01_demo_point_cloud_viewer.py**](../../utils/demo_scripts/radar/01_demo_point_cloud_viewer.py): Load, filter, and visualize radar point cloud data from CSV files. Useful for quick exploration of on-chip processed radar point clouds, with coloring by intensity or doppler velocity.
 - [**02_demo_raw_data_viewer.py**](../../utils/demo_scripts/radar/02_demo_raw_data_viewer.py): Load, process, and visualize raw radar ADC data from .mat files. Demonstrates creation of range-azimuth and range-doppler images, enabling custom signal processing research.
-- [**03_demo_point_cloud_2_rgb_projection_viewer.py**](../../utils/demo_scripts/radar/03_demo_point_cloud_2_rgb_projection_viewer.py): Project radar point clouds onto undistorted RGB images using camera calibration and extrinsic parameters. Visualizes spatial alignment between radar and camera data.

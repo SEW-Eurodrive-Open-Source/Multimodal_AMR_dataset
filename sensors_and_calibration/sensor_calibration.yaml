@@ -25,7 +25,7 @@ sensors:
 
   radar:
     bev_size_m: [9.24, 15.84]  # [height_m, width_m]
-    T_csv_to_sensor:  # ROS radar_link axes -> KITTI-style radar axes
+    T_csv_to_sensor:  # ROS radar axes -> KITTI-style radar axes
       - [0.0, -1.0,  0.0, 0.0]
       - [0.0,  0.0, -1.0, 0.0]
       - [1.0,  0.0,  0.0, 0.0]

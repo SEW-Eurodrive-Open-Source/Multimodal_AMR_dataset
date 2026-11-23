@@ -52,6 +52,10 @@ python SEW_Dataset_viewer.py --config config_kitti.yaml
 ```
 
 Both configurations use KITTI-style calibration transformations such as `Tr_velo_to_cam` to project the point cloud into the camera views.
+In the SEW viewer, press **r** to toggle on-chip radar detections (off by default).
+Magenta rings mark the returns on both images. The viewer transforms radar CSV points
+into the shared camera frame using the [radar calibration](./sensors_and_calibration/sensor_calibration.yaml),
+then projects them with `P2` (RGB) and `P3` (thermal). Doppler is not displayed.
 
 # Table of Contents
 
