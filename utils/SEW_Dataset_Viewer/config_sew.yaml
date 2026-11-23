@@ -4,7 +4,7 @@
 # All folder paths may be absolute, or relative to `base_dir`.
 # Point `base_dir` at your local copy of the dataset and you are ready.
 
-base_dir: /your/path/to/SEW_Dataset_2026/
+base_dir: /mnt/sensordaten/SEW_Dataset_2026/
 
 # Dataset split. The {split} token in the folder paths below is replaced with this
 # value, so switching to the test/validation frames is a one-word change here (or
@@ -19,6 +19,8 @@ image_rgb_folder:      "{split}/50_rgb/calibrated"       # RGB images     (left 
 image_thermal_folder:  "{split}/60_thermal/calibrated"   # thermal images (right pane, KITTI: image_3)
 bin_folder:            "{split}/70_tof/pointcloud/bin"    # ToF point cloud .bin (x,y,z,intensity) - default
 pcd_folder:            "{split}/70_tof/pointcloud/pcd"    # ToF point cloud .pcd (same data; set use_pcd: true to use)
+radar_csv_folder:      "{split}/40_radar/pointcloud/csv"  # headerless x,y,z,intensity,doppler
+sensor_calibration:    "../../sensors_and_calibration/sensor_calibration.yaml"  # relative to this config
 yolo_thermal_folder:   "{split}/02_yolo_thermal_distance" # 2D YOLO labels, thermal (optional)
 yolo_rgb_folder:       "{split}/02_yolo_rgb_distance"     # 2D YOLO labels, rgb (optional)
 timestamps_folder:     "{split}/04_timestamps"           # per-frame sensor timestamps (sync-spread bar)
@@ -37,6 +39,7 @@ use_pcd: false                  # read the .pcd instead of the .bin for the ToF 
 
 # --- default visible layers (toggle live with the keys shown) -----------
 show_tof_pcl:      true    # 1  ToF point cloud (depth on rgb | intensity on thermal)
+show_radar_pcl:    false   # r  radar point cloud (magenta rings on both panes)
 show_3d_label:     true    # 2  3D boxes (KITTI)
 show_thermal_label: false  # 3  thermal 2D YOLO boxes
 show_rgb_label:    false   # 4  rgb 2D YOLO boxes

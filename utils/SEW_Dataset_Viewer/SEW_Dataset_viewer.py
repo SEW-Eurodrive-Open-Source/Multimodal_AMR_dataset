@@ -45,6 +45,7 @@ Controls (interactive)
 
   Overlay keys
     1  ToF point cloud (range on rgb | amplitude on thermal)
+    r  radar CSV point cloud (magenta rings on both panes)
     2  3D boxes (KITTI)          3  thermal 2D YOLO boxes
     4  rgb 2D YOLO boxes         5  rgb 2D KITTI box (bbox cols)
     p  predictions - cycle off / 2D / 3D / 2D+3D (dashed; needs a pred_* folder)
@@ -58,6 +59,7 @@ import math
 import json
 import argparse
 from dataclasses import dataclass
+from functools import lru_cache
 
 import numpy as np
 import cv2
@@ -105,6 +107,8 @@ class Config:
     image_thermal_folder: str
     bin_folder: str
     pcd_folder: str
+    radar_csv_folder: str
+    sensor_calibration: str
     use_pcd: bool
     yolo_thermal_folder: str
     yolo_rgb_folder: str
@@ -115,6 +119,7 @@ class Config:
     output_folder: str
     image_ext: str
     show_tof_pcl: bool
+    show_radar_pcl: bool
     show_3d_label: bool
     show_thermal_label: bool
     show_rgb_label: bool
@@ -221,6 +226,8 @@ def load_config(path, split_override=None):
         image_thermal_folder=R("image_thermal_folder"),
         bin_folder=R("bin_folder"),
         pcd_folder=R("pcd_folder"),
+        radar_csv_folder=R("radar_csv_folder"),
+        sensor_calibration=_resolve(config_dir, raw.get("sensor_calibration")),
         use_pcd=_as_bool(raw.get("use_pcd"), False),
         yolo_thermal_folder=R("yolo_thermal_folder"),
         yolo_rgb_folder=R("yolo_rgb_folder"),
@@ -231,6 +238,7 @@ def load_config(path, split_override=None):
         output_folder=resolve_output(raw.get("output_folder")) or os.path.join(config_dir, "output"),
         image_ext=ext,
         show_tof_pcl=_as_bool(raw.get("show_tof_pcl"), True),
+        show_radar_pcl=_as_bool(raw.get("show_radar_pcl"), False),
         show_3d_label=_as_bool(raw.get("show_3d_label"), True),
         show_thermal_label=_as_bool(raw.get("show_thermal_label"), False),
         show_rgb_label=_as_bool(raw.get("show_rgb_label"), False),
@@ -463,8 +471,38 @@ def load_tof_cloud(cfg, name):
     return load_bin(bin_path)
 
 
+@lru_cache(maxsize=1)
+def radar_csv_to_reference(path):
+    """Radar equivalent of Tr_velo_to_cam, including the CSV axis conversion."""
+    import yaml  # Only the optional radar layer needs nested calibration YAML.
+
+    with open(path) as f:
+        radar = yaml.safe_load(f)["sensors"]["radar"]
+    axes = np.asarray(radar["T_csv_to_sensor"], dtype=float)
+    extrinsic = np.asarray(radar["T_sensor_to_reference"], dtype=float)
+    if axes.shape != (4, 4) or extrinsic.shape != (4, 4):
+        raise ValueError(f"{path}: expected two 4x4 radar transforms")
+    return (extrinsic @ axes)[:3]
+
+
+def draw_radar_cloud(stitched, rgb_w, cfg, name, P2, P3, R0):
+    path = os.path.join(cfg.radar_csv_folder, name + ".csv")
+    if not os.path.isfile(path):
+        print(f"[!] radar CSV missing: {path}", file=sys.stderr)
+        return
+    if not os.path.getsize(path):
+        return  # Frame with no detections.
+    cloud = np.loadtxt(path, delimiter=",", usecols=(0, 1, 2, 3), ndmin=2)
+    transform = radar_csv_to_reference(cfg.sensor_calibration)
+    for pane, P in ((stitched[:, :rgb_w], P2), (stitched[:, rgb_w:], P3)):
+        h, w = pane.shape[:2]
+        u, v, _, _ = project_to_image(cloud[:, :3], cloud[:, 3], P, transform, R0, w, h)
+        for x, y in zip(u, v):
+            cv2.circle(pane, (int(x), int(y)), 4, (255, 0, 255), 2, cv2.LINE_AA)
+
+
 def project_to_image(pts, intensity, P, Tr, R0, W, H):
-    """Project ToF points into a camera. Returns per-visible-point arrays
+    """Project sensor points into a camera. Returns per-visible-point arrays
     (u, v, rng, amp): integer pixel, Euclidean range (m), intensity."""
     empty = (np.empty(0, int), np.empty(0, int),
              np.empty(0, np.float32), np.empty(0, np.float32))
@@ -731,7 +769,7 @@ def render_frame(name, cfg, flags):
         raise ValueError(f"cannot read thermal image: {thermal_path}")
 
     boxes_gt = read_labels(label_path)
-    P2, P3, Tr, _ = read_calib(calib_path)
+    P2, P3, Tr, R0_rect = read_calib(calib_path)
     R0 = make_manual_R0()      # identity for both datasets (manual tilt is 0)
 
     if rgb_img.shape[0] != thermal_img.shape[0]:      # match heights so hstack works
@@ -758,6 +796,9 @@ def render_frame(name, cfg, flags):
                 _, a_map, _ = project_maps(pts, inten, P3, Tr, R0, thermal_w, H)
                 overlay_points(stitched[:, rgb_w:total_w],
                                colorize_map(a_map, TOF_AMP_MIN, TOF_AMP_MAX))
+
+    if flags["radar_pcl"] and cfg.radar_csv_folder:
+        draw_radar_cloud(stitched, rgb_w, cfg, name, P2, P3, R0_rect)
 
     # --- ground-truth 3D boxes (solid white, both panes) ---
     if flags["box3d"] and P2 is not None:
@@ -827,6 +868,7 @@ NAV_HELP = [
 ]
 OVERLAY_HELP = [
     "1 ToF point cloud (range|amplitude)",
+    "r radar point cloud (magenta rings)",
     "2 3D boxes      3 thermal 2D YOLO",
     "4 rgb 2D YOLO   5 rgb 2D KITTI box",
     "p predictions cycle off/2D/3D/2D+3D",
@@ -846,6 +888,8 @@ def draw_overlay(disp, name, idx, total, cfg, flags, show_sync, show_help, error
     layers = [("tof", flags["tof_pcl"]), ("3d", flags["box3d"]),
               ("th-yolo", flags["thermal_yolo"]), ("rgb-yolo", flags["rgb_yolo"]),
               ("rgb-2d", flags["rgb_kitti_2d"]), ("cbar", flags["colorbars"])]
+    if cfg.radar_csv_folder:
+        layers.insert(1, ("radar", flags["radar_pcl"]))
     status = "  ".join(f"{n}:{'on' if v else 'off'}" for n, v in layers)
     status += f"  pred:{PRED_LABELS[flags['predictions']]}"
     (tw, _), _ = cv2.getTextSize(status, FONT, 0.5, 1)
@@ -1015,7 +1059,7 @@ def print_intro(cfg, names):
     print(f" config   : {cfg.name}" + (f"   split: {cfg.split}" if cfg.split else ""))
     print(f" base_dir : {cfg.base_dir}")
     print(f" frames   : {len(names)}   ({names[0]} ... {names[-1]})")
-    print(" controls : n/b next/prev | m/v +-100 | g goto | 1-5,p layers | c bars | t sync | s save | h help | q quit")
+    print(" controls : n/b next/prev | m/v +-100 | g goto | 1-5,r,p layers | c bars | t sync | s save | h help | q quit")
     print("=" * 64)
 
 
@@ -1086,6 +1130,8 @@ def run_interactive(cfg, flags, names, start_frame=None):
             idx = prompt_jump(names, idx); need_render = True
         elif key == ord('1'):
             flags["tof_pcl"] = not flags["tof_pcl"]; need_render = True
+        elif key == ord('r') and cfg.radar_csv_folder:
+            flags["radar_pcl"] = not flags["radar_pcl"]; need_render = True
         elif key == ord('2'):
             flags["box3d"] = not flags["box3d"]; need_render = True
         elif key == ord('3'):
@@ -1225,6 +1271,7 @@ def main():
     cfg = load_config(cfg_path, split_override=args.split)
     flags = {
         "tof_pcl":      cfg.show_tof_pcl,
+        "radar_pcl":    cfg.show_radar_pcl,
         "box3d":        cfg.show_3d_label,
         "thermal_yolo": cfg.show_thermal_label,
         "rgb_yolo":     cfg.show_rgb_label,

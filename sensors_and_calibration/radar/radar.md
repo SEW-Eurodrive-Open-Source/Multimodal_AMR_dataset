@@ -48,20 +48,20 @@ The radar operates in **TDM-MIMO** mode using all three transmit antennas (Tx0, 
 ---
 ## Extrinsic Calibration
 
-The radar sensor is physically mounted on a mobile robot. For consistent and reproducible integration across different platforms, the extrinsic parameters (position and orientation of the sensor in the robot frame) are defined in a URDF (`.urdf.xacro`) file.
-
-- **URDF File**: [AMR_sensors.xacro](../../utils/dataset_rosbag_viewer/ros1/urdf_viewer/urdf/AMR_sensors.xacro)
-
+The radar extrinsics are defined under `sensors.radar` in [sensor_calibration.yaml](../sensor_calibration.yaml).
+For on-chip CSV points, first apply `T_csv_to_sensor` to convert from ROS to KITTI camera axes, then apply `T_sensor_to_reference` to place the points in the dataset reference frame.
 
 ## Intrinsic Calibration
 
-- **Range Calibration**: Fitted polynomial for converting range index to Cartesian coordinate.
+These calibrations apply only to range and angle bins computed from the raw ADC data in `.mat` files. The on-chip CSV and PCD point clouds already contain Cartesian coordinates; do not apply these bin conversions to them.
+
+- **Range Calibration**: Converts a range bin index to metres.
 ```python
    def rangebin2meter(self, range_bin, bin_width=0.047, offset=-0.015):
       range_m = bin_width * range_bin + offset
       return np.clip(range_m, a_min=1e-3, a_max=None)
 ```
-- **Angular Calibration**: Fitted function for converting angle bins to Cartesian coordinates.
+- **Angular Calibration**: Converts an angle bin index to degrees.
 ```python
    def idx2deg(self, angle_idx, interp_size=128):
       idx_norm = (angle_idx / (interp_size - 1)) * 2 - 1  # idx_norm ∈ [-1, 1]
@@ -124,4 +124,3 @@ The following demo scripts are provided to help you get started with radar data 
 
 - [**01_demo_point_cloud_viewer.py**](../../utils/demo_scripts/radar/01_demo_point_cloud_viewer.py): Load, filter, and visualize radar point cloud data from CSV files. Useful for quick exploration of on-chip processed radar point clouds, with coloring by intensity or doppler velocity.
 - [**02_demo_raw_data_viewer.py**](../../utils/demo_scripts/radar/02_demo_raw_data_viewer.py): Load, process, and visualize raw radar ADC data from .mat files. Demonstrates creation of range-azimuth and range-doppler images, enabling custom signal processing research.
-- [**03_demo_point_cloud_2_rgb_projection_viewer.py**](../../utils/demo_scripts/radar/03_demo_point_cloud_2_rgb_projection_viewer.py): Project radar point clouds onto undistorted RGB images using camera calibration and extrinsic parameters. Visualizes spatial alignment between radar and camera data.
