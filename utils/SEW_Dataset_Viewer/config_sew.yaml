@@ -4,7 +4,7 @@
 # All folder paths may be absolute, or relative to `base_dir`.
 # Point `base_dir` at your local copy of the dataset and you are ready.
 
-base_dir: /your/path/to/SEW_Dataset_2026/
+base_dir: /mnt/sensordaten/SEW_Dataset_2026/
 
 # Dataset split. The {split} token in the folder paths below is replaced with this
 # value, so switching to the test/validation frames is a one-word change here (or
