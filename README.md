@@ -371,13 +371,11 @@ Since missing a curb does not pose a safety risk, they are not considered for ou
 
 # Download
 
-The dataset packages can be downloaded under https://share.sew-eurodrive.de/sew-dataset/ .
-
 | Package name| Contents | Download size |Unpacked size |
 | ------- | -------- | ------------- | ------------- |
-| 2026_SEW_Dataset_Main_set.zip | Train, validation, and test sets with multiple rosbags and preceding frames for all key frames of the test set| 78 GB |162 GB |
-| 2026_SEW_Dataset_Preview_set.zip| Validation set with one rosbag for a small preview | 20 GB |39 GB |
-| 2026_SEW_Dataset_Main_set_additional_sequence.zip | Preceding train and validation frames without key frames or labels | 97 GB |194 GB |
+| [2026_SEW_Dataset_Main_set.zip](https://share.sew-eurodrive.de/sew-dataset/2026_SEW_Dataset_Main_set.zip) | Train, validation, and test sets with multiple rosbags and preceding frames for all key frames of the test set| 78 GB |162 GB |
+| [2026_SEW_Dataset_Preview_set.zip](https://share.sew-eurodrive.de/sew-dataset/2026_SEW_Dataset_Preview_set.zip)| Validation set with one rosbag for a small preview | 20 GB |39 GB |
+| [2026_SEW_Dataset_Main_set_additional_sequence.zip](https://share.sew-eurodrive.de/sew-dataset/2026_SEW_Dataset_Main_set_additional_sequence.zip) | Preceding train and validation frames without key frames or labels | 97 GB |194 GB |
 
 If you need further information or data, have questions, suggestions, or improvements, please contact us at
 SEW-Dataset@sew-eurodrive.de.
