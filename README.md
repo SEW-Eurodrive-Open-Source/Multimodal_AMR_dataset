@@ -21,7 +21,7 @@ frame, the dataset provides:
 - Metadata for domain, weather and lighting conditions
 
 Preceding each key frame, every sensor has up to 3 previous unlabeled frames. All labels, metadata, calibration files, sensor data, and preceding frames have the same 6 digit number as the corresponding key frame. 
-The dataset is split in 10k train frames, 2.7k validation frames and 3.2k test frames. To participate in the benchmark, send your predictions to [SEW-Dataset@sew-eurodrive.de](mailto:SEW-Dataset@sew-eurodrive.de) your predictions of one or multiple modalities of the test set. We will publish the results on the [leaderboard](https://sew-eurodrive-open-source.github.io/Multimodal_AMR_dataset/).
+The dataset is split in 10k train frames, 2.7k validation frames and 3.2k test frames. The dataset is split in 10k train frames, 2.7k validation frames and 3.2k test frames. To participate in the benchmark, send us your predictions of one or multiple modalities of the test set. We will publish the results on the [leaderboard](https://sew-eurodrive-open-source.github.io/Multimodal_AMR_dataset/). Submission instructions can be found at the bottom of the leaderboard page.
 
 <p align="center">
   <img src="./images/sew_dataset_overview.gif" alt="Synchronized multimodal sensor views from the SEW Multimodal AMR Dataset" width="2800">
