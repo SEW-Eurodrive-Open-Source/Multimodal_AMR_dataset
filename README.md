@@ -21,7 +21,7 @@ frame, the dataset provides:
 - Metadata for domain, weather and lighting conditions
 
 Preceding each key frame, every sensor has up to 3 previous unlabeled frames. All labels, metadata, calibration files, sensor data, and preceding frames have the same 6 digit number as the corresponding key frame. 
-The dataset is split in 10k train frames, 2.7k validation frames and 3.2k test frames. To participate in the benchmark, send your predictions to [SEW-Dataset@sew-eurodrive.de](mailto:SEW-Dataset@sew-eurodrive.de) your predictions of one or multiple modalities of the test set. We will publish the results on the [leaderboard](https://sew-eurodrive-open-source.github.io/Multimodal_AMR_dataset/).
+The dataset is split in 10k train frames, 2.7k validation frames and 3.2k test frames. The dataset is split in 10k train frames, 2.7k validation frames and 3.2k test frames. To participate in the benchmark, send us your predictions of one or multiple modalities of the test set. We will publish the results on the [leaderboard](https://sew-eurodrive-open-source.github.io/Multimodal_AMR_dataset/). Submission instructions can be found at the bottom of the leaderboard page.
 
 <p align="center">
   <img src="./images/sew_dataset_overview.gif" alt="Synchronized multimodal sensor views from the SEW Multimodal AMR Dataset" width="2800">
@@ -371,13 +371,11 @@ Since missing a curb does not pose a safety risk, they are not considered for ou
 
 # Download
 
-The dataset packages can be downloaded under https://share.sew-eurodrive.de/sew-dataset/ .
-
 | Package name| Contents | Download size |Unpacked size |
 | ------- | -------- | ------------- | ------------- |
-| 2026_SEW_Dataset_Main_set.zip | Train, validation, and test sets with multiple rosbags and preceding frames for all key frames of the test set| 78 GB |162 GB |
-| 2026_SEW_Dataset_Preview_set.zip| Validation set with one rosbag for a small preview | 20 GB |39 GB |
-| 2026_SEW_Dataset_Main_set_additional_sequence.zip | Preceding train and validation frames without key frames or labels | 97 GB |194 GB |
+| [2026_SEW_Dataset_Main_set.zip](https://share.sew-eurodrive.de/sew-dataset/2026_SEW_Dataset_Main_set.zip) | Train, validation, and test sets with multiple rosbags and preceding frames for all key frames of the test set| 78 GB |162 GB |
+| [2026_SEW_Dataset_Preview_set.zip](https://share.sew-eurodrive.de/sew-dataset/2026_SEW_Dataset_Preview_set.zip)| Validation set with one rosbag for a small preview | 20 GB |39 GB |
+| [2026_SEW_Dataset_Main_set_additional_sequence.zip](https://share.sew-eurodrive.de/sew-dataset/2026_SEW_Dataset_Main_set_additional_sequence.zip) | Preceding train and validation frames without key frames or labels | 97 GB |194 GB |
 
 If you need further information or data, have questions, suggestions, or improvements, please contact us at
 SEW-Dataset@sew-eurodrive.de.
